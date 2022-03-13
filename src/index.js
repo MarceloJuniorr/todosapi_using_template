@@ -33,9 +33,9 @@ app.post('/users', (request, response) => {
     }
  
     const user = {
-       username,
-       name,
        id: v4(),
+       name,
+       username,
        todos: []
     }
 
@@ -93,29 +93,23 @@ app.put('/todos/:id', checksExistsUserAccount, (request, response) => {
         return response.status(400).json({"error": "title or deadline parameter not found in the body" })
     }
     } else {
-        return response.status(400).json({"error": "id not found for user" })
+        return response.status(404).json({"error": "id not found for user" })
 
     }
 });
 
 app.patch('/todos/:id/done', checksExistsUserAccount, (request, response) => {
       const {user} = request;
-    const {id} = request.query;
+    const {id} = request.params;
 
     const todo = user.todos.find(
         (todo) => id === todo.id 
     ) 
-    if (title){
-        todo.title = title
-    };
-    if (deadline) {
-        todo.deadline =  new Date(deadline)
-    };
-    if (title || deadline) {
-        return response.status(201).json(todo)
-    } else {
-        return response.status(400).json({"error": "title or deadline parameter not found in the body" })
-    }
+    
+    if(todo){
+    todo.done = true
+    }else{
+         return response.status(404).json({"error": "id not found" }) }
 });
 
 app.delete('/todos/:id', checksExistsUserAccount, (request, response) => {
@@ -132,11 +126,11 @@ app.delete('/todos/:id', checksExistsUserAccount, (request, response) => {
             todoIndex => todoIndex.id === todo.id);
         user.todos.splice(indexTodo,1);
         
-        return response.status(200).json({ message: "Todo deleted successfully" })
+        return response.status(204).send();
         
     }else{
         
-        return response.status(400).json({ message: "Todo id not found" })
+        return response.status(404).json({ message: "Todo id not found" })
     }
 });
 
