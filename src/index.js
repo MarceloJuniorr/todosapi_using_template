@@ -69,8 +69,9 @@ app.post('/todos', checksExistsUserAccount, (request, response) => {
 
 app.put('/todos/:id', checksExistsUserAccount, (request, response) => {
     const {user} = request;
-    const {id} = request.query;
+    const { id } = request.params;
 
+    
     const todo = user.todos.find(
         (todo) => id === todo.id 
     )
@@ -118,7 +119,7 @@ app.patch('/todos/:id/done', checksExistsUserAccount, (request, response) => {
 });
 
 app.delete('/todos/:id', checksExistsUserAccount, (request, response) => {
-      const { id } = request.query;
+      const { id } = request.params;
     const { user } = request
 
 
