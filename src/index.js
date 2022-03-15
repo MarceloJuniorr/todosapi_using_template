@@ -41,7 +41,7 @@ app.post('/users', (request, response) => {
 
     users.push(user)
  
-    return response.status(201).json({ user });
+    return response.status(201).json( user );
 });
 
 app.get('/todos', checksExistsUserAccount, (request, response) => {
@@ -99,7 +99,7 @@ app.put('/todos/:id', checksExistsUserAccount, (request, response) => {
 });
 
 app.patch('/todos/:id/done', checksExistsUserAccount, (request, response) => {
-      const {user} = request;
+    const {user} = request;
     const {id} = request.params;
 
     const todo = user.todos.find(
@@ -108,6 +108,7 @@ app.patch('/todos/:id/done', checksExistsUserAccount, (request, response) => {
     
     if(todo){
     todo.done = true
+    return response.status(201).json(todo);
     }else{
          return response.status(404).json({"error": "id not found" }) }
 });
@@ -130,7 +131,7 @@ app.delete('/todos/:id', checksExistsUserAccount, (request, response) => {
         
     }else{
         
-        return response.status(404).json({ message: "Todo id not found" })
+        return response.status(404).json({ error: "Todo id not found" })
     }
 });
 
